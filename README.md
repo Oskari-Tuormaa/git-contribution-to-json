@@ -1,4 +1,4 @@
-# git-contribution-to-json
+# git-contribution-to-json [![MIT License](https://img.shields.io/apm/l/atomic-design-ui.svg?style=flat-square)](https://github.com/Oskari-Tuormaa/git-contribution-to-json/blob/master/LICENSE) [![PyPI pyversions](https://img.shields.io/pypi/pyversions/GitPython?style=flat-square)](https://shields.io/)
 
 This is a little script that outputs a json file containing the amount lines each contributor has commited to each file in the repo.
 
