@@ -25,12 +25,12 @@ The output json is structured as in the following example:
 ```json
 {
     "path/of/file1": {
-        "contributor1": number_of_lines,
-        "contributor2": number_of_lines
+        "contributor1": 45,
+        "contributor2": 100
     },
     "path/of/file2": {
-        "contributor1": number_of_lines,
-        "contributor2": number_of_lines
+        "contributor1": 60,
+        "contributor2": 20
     }
 }
 ```
