@@ -4,6 +4,8 @@ import subprocess
 import sys
 import json
 from git import Repo
+import argparse
+import os
 
 def get_tracked_files(trees):
  paths = []
@@ -15,12 +17,22 @@ def get_tracked_files(trees):
  return paths
 
 if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description='Get contributions for current git HEAD')
+    parser.add_argument("-p", help="Prints output to stdout instead of file", action="store_true")
+    parser.add_argument("-f", "--file", default=None, help="Get contribution for single file", nargs=1)
+    parser.add_argument("-o", "--output", default=None, help="Allows specification of output file name")
+    args = parser.parse_args()
+
     repo = Repo('.')
     branch = repo.active_branch
-    tracked_files = get_tracked_files([repo.tree()])
+
+    if args.file:
+        files_to_check = [args.file[0]]
+    else:
+        files_to_check = get_tracked_files([repo.tree()])
 
     blames = dict()
-    for f in tracked_files:
+    for f in files_to_check :
         blames[f] = dict()
         for commit, lines in repo.blame('HEAD', f):
             author = commit.author.name
@@ -30,5 +42,15 @@ if __name__ == "__main__":
             except KeyError:
                 blames[f][author] = len(real_lines)
 
-    with open('git_contributions.json','w') as f:
-        json.dump(blames, f)
+    if args.print:
+        print(json.dumps(blames))
+    else:
+        if args.output:
+            output_name = args.output
+        else:
+            output_name = 'git_contributions.json'
+
+        with open(output_name,'w') as f:
+            json.dump(blames, f)
+
+        print('./git_contributions.json generated')
