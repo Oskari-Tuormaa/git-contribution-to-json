@@ -53,4 +53,4 @@ if __name__ == "__main__":
         with open(output_name,'w') as f:
             json.dump(blames, f)
 
-        print('./git_contributions.json generated')
+        print('./%s generated' % output_name)
