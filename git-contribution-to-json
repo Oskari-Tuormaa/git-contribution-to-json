@@ -42,7 +42,7 @@ if __name__ == "__main__":
             except KeyError:
                 blames[f][author] = len(real_lines)
 
-    if args.print:
+    if args.p:
         print(json.dumps(blames))
     else:
         if args.output:
