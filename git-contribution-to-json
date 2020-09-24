@@ -16,9 +16,11 @@ def get_tracked_files(trees):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Get contributions for current git HEAD')
-    parser.add_argument("-p", help="Prints output to stdout instead of file", action="store_true")
-    parser.add_argument("-f", "--file", default=None, help="Get contribution for single file", nargs=1)
-    parser.add_argument("-o", "--output", default=None, help="Allows specification of output file name")
+    parser.add_argument("-p", help="print output to stdout instead of file", action="store_true")
+    parser.add_argument("-f", "--file", default=None, help="get contribution for single file", nargs=1)
+    parser.add_argument("-o", "--output", default=None, help="allows specification of output file name")
+    parser.add_argument("-t", "--time", default=None, help="show most recent commit for each author", action="store_true")
+    parser.add_argument("-T", default=None, help="show timestamp in time since epoch", action="store_true")
     args = parser.parse_args()
 
     repo = Repo('.')
@@ -34,11 +36,26 @@ if __name__ == "__main__":
         blames[f] = dict()
         for commit, lines in repo.blame('HEAD', f):
             author = commit.author.name
+            auth_time = commit.authored_date
+            blames[f][author] = {}
+
             real_lines = [x for x in lines if len(x) > 0]
             try:
-                blames[f][author] += len(real_lines)
+                blames[f][author]['count'] += len(real_lines)
             except KeyError:
-                blames[f][author] = len(real_lines)
+                blames[f][author]['count'] = len(real_lines)
+
+            if args.time:
+                try:
+                    if blames[f][author]['time'] < auth_time:
+                        blames[f][author]['time'] = auth_time
+                except KeyError:
+                    blames[f][author]['time'] = auth_time
+
+    if args.time and not args.T:
+        for f in files_to_check:
+            for auth in blames[f]:
+                blames[f][auth]['time'] = f"{time.asctime(time.gmtime(blames[f][auth]['time']))}"
 
     if args.p:
         print(json.dumps(blames))
