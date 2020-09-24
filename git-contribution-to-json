@@ -20,7 +20,7 @@ if __name__ == "__main__":
     parser.add_argument("-f", "--file", default=None, help="get contribution for single file", nargs=1)
     parser.add_argument("-o", "--output", default=None, help="allows specification of output file name")
     parser.add_argument("-t", "--time", default=None, help="show most recent commit for each author", action="store_true")
-    parser.add_argument("-T", default=None, help="show timestamp in time since epoch", action="store_true")
+    parser.add_argument("-e", default=None, help="show timestamp in time since epoch", action="store_true")
     args = parser.parse_args()
 
     repo = Repo('.')
@@ -52,7 +52,7 @@ if __name__ == "__main__":
                 except KeyError:
                     blames[f][author]['time'] = auth_time
 
-    if args.time and not args.T:
+    if args.time and not args.e:
         for f in files_to_check:
             for auth in blames[f]:
                 blames[f][auth]['time'] = f"{time.asctime(time.gmtime(blames[f][auth]['time']))}"
