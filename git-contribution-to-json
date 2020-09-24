@@ -1,9 +1,10 @@
 #!python3
 
-from git import Repo
+import git
 import json
 import argparse
 import time
+import os
 
 def get_tracked_files(trees):
  paths = []
@@ -23,11 +24,11 @@ if __name__ == "__main__":
     parser.add_argument("-e", default=None, help="show timestamp in time since epoch", action="store_true")
     args = parser.parse_args()
 
-    repo = Repo('.')
+    repo = git.Repo('.', search_parent_directories=True)
     branch = repo.active_branch
 
     if args.file:
-        files_to_check = [args.file[0]]
+        files_to_check = [os.path.abspath(args.file[0])]
     else:
         files_to_check = get_tracked_files([repo.tree()])
 
