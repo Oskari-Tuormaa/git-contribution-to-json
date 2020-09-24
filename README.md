@@ -13,7 +13,7 @@ GitPython
 
 ## How to use
 
-1. `cd` to root of git repo
+1. `cd` to anywhere in git repo
 2. Run `git-contribution-to-json`
 3. ...
 4. Profit from the generated `git_contributions.json`
