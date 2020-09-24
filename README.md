@@ -18,6 +18,8 @@ GitPython
 3. ...
 4. Profit from the generated `git_contributions.json`
 
+Check `git-contribution-to-json --help` for options
+
 ## Output structure
 
 The output json is structured as in the following example:
